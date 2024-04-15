@@ -24,7 +24,9 @@ const displayUser = (user) => {
       <h2>${product.productName}</h2>
       <img src="${product.image}" alt="${product.description}" />
       <p>${product.description}</p>
+      <p>Brand: ${product.brand}</p>
       <p>Price: $${product.price}</p>
+      <p>Category: ${product.category}</p>
     </section>`;
   });
   profileInnerHTML = `
