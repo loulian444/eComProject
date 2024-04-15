@@ -20,9 +20,13 @@ app.get(`/`, (req, res) => {
   res.sendFile(path.join(__dirname, "..", "client/index.html"));
 });
 
+
 app.use(`/api`, require(`./api`));
 app.use(`/auth`, require(`./auth`));
 
+app.get(`*`, (req, res) => {
+  res.status(404).write(`<a href="http://localhost:4444">Click here to redirect</a>`);
+})
 app.listen(PORT, (error) => {
   if (!error) {
     console.log(`Server is running and listenting on port ${PORT}`);

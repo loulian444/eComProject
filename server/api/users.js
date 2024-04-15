@@ -1,7 +1,8 @@
 const router = require(`express`).Router();
 const User = require("../../database/models/userModel");
+const { requireAdmin } = require("./utils");
 
-router.get(`/`, async (req, res) => {
+router.get(`/`, requireAdmin, async (req, res) => {
   try {
     const allUsers = await User.find();
 
