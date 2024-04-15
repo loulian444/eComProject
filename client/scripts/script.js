@@ -1,6 +1,5 @@
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get(`id`);
-console.log(id);
 
 if (id) {
   const auth = document.querySelector(`#auth`);
@@ -26,17 +25,40 @@ const fetchProducts = async (page) => {
 const displayProducts = (products) => {
   const productInnerHTML = products.map((product) => {
     return `
-    <section class="product" id="${product.id}">
+    <section class="product" id="${product._id}">
       <h2>${product.productName}</h2>
       <img src="${product.image}" alt="${product.description}" />
       <p>${product.description}</p>
       <p>Price: $${product.price}</p>
-      ${id ? `<button class="favButton">Add Fav</button>` : null}
+      ${id ? `<button class="favButton">Add Fav</button>` : ``}
     </section>`;
   });
 
   const productSection = document.querySelector(`#productSection`);
   productSection.innerHTML = productInnerHTML.join(``);
+};
+
+const addFavorites = async (userId, productId) => {
+  const response = await fetch(`http://localhost:4444/api/users`, {
+    method: `PUT`,
+    headers: {
+      "Content-Type": `application/json`,
+    },
+    body: JSON.stringify({ userId, productId }),
+  });
+  const result = await response.json();
+  console.log(result);
+};
+
+const favEventListener = (id) => {
+  if (id) {
+    const favButtons = document.querySelectorAll(`.favButton`);
+    favButtons.forEach((button) => {
+      button.addEventListener(`click`, (e) => {
+        addFavorites(id, e.target.parentElement.id);
+      });
+    });
+  }
 };
 
 const execute = async () => {
@@ -47,15 +69,7 @@ const execute = async () => {
   if (products) {
     displayProducts(products.products);
 
-    if (id) {
-      console.log(id);
-      const favButtons = document.querySelectorAll(`.favButton`);
-      favButtons.forEach((button) => {
-        button.addEventListener(`click`, () => {
-          console.log(`gg`)
-        })
-      })
-    }
+    favEventListener(id);
 
     const prevPage = document.querySelector(`#prevPage`);
     const nextPage = document.querySelector(`#nextPage`);
@@ -70,6 +84,7 @@ const execute = async () => {
           pageNumberElem.innerHTML = pageNumber;
           const products = await fetchProducts(pageNumber);
           displayProducts(products.products);
+          favEventListener(id);
           if (pageNumber === 2) prevPage.removeAttribute(`style`);
           if (products.lastPage) nextPage.style.visibility = `hidden`;
         }
@@ -79,6 +94,7 @@ const execute = async () => {
           pageNumberElem.innerHTML = pageNumber;
           const products = await fetchProducts(pageNumber);
           displayProducts(products.products);
+          favEventListener(id);
           if (!products.lastPage) nextPage.removeAttribute(`style`);
           if (pageNumber === 1) prevPage.style.visibility = `hidden`;
         }

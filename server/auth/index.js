@@ -2,6 +2,7 @@ const router = require(`express`).Router();
 const bcrypt = require(`bcrypt`);
 const jwt = require(`jsonwebtoken`);
 const User = require("../../database/models/userModel");
+const Product = require("../../database/models/productModel");
 
 router.get(`/`, (req, res) => {
   console.log(process.env);
@@ -61,17 +62,17 @@ router.post(`/login`, async (req, res) => {
 
 router.get(`/me`, async (req, res) => {
   try {
-    const { id } = req.body;
-    // const user = await User.findOne({ id });
-    const test = await User.aggregate({
-      $lookup: {
-        from: `favorites`,
-        localField: `products`,
-        foreignField: `_id`,
-        as: `favDetails`,
-      },
-    });
-    res.send(test);
+    const { id } = req.query;
+    const user = await User.findOne({ _id: id });
+    const favProducts = [];
+    for (let i = 0; i < user.favorites.length; i++) {
+      const product = await Product.findOne({ _id: user.favorites[i] });
+      favProducts.push(product);
+    }
+
+    const newUser = { ...user._doc, favProducts };
+
+    res.send(newUser);
   } catch (error) {
     res.status(500).send({ error });
   }

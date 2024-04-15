@@ -15,7 +15,6 @@ router.put(`/`, async (req, res) => {
   try {
     const { userId, productId } = req.body;
     const user = await User.findOne({ _id: userId });
-    console.log(req.body);
     if (user.favorites.includes(productId)) {
       res.send({ message: `already favorited` });
     } else {
