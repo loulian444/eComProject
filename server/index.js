@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require(`body-parser`);
 const cors = require(`cors`);
 const PORT = 4444;
+const path = require(`path`)
 require(`dotenv`).config();
 const mongoose = require(`mongoose`);
 
@@ -13,8 +14,10 @@ mongoose.connect(
 app.use(bodyParser.json());
 app.use(cors());
 
+app.use(express.static(path.join(__dirname, "..", "client")))
+
 app.get(`/`, (req, res) => {
-  res.send(`duh herro`);
+  res.sendFile(path.join(__dirname, "..", "client/index.html"));
 });
 
 app.use(`/api`, require(`./api`));

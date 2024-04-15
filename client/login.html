@@ -4,20 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
+    <script src="./scripts/login.js" defer></script>
     <link rel="stylesheet" href="./style.css" />
   </head>
 
   <body>
-    <section id="navbar">
+    <section id="navbar" class="flex">
       <a href="./index.html">Home</a>
     </section>
 
-    <h1>Login</h1>
     <form>
+      <h1>Login</h1>
       <label for="username">Username: </label>
       <input type="text" id="username" />
       <label for="password">Password: </label>
-      <input type="text" id="password" />
+      <input type="password" id="password" />
 
       <button>Submit</button>
     </form>

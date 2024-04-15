@@ -11,4 +11,21 @@ router.get(`/`, async (req, res) => {
   }
 });
 
+router.put(`/`, async (req, res) => {
+  try {
+    const { userId, productId } = req.body;
+    const user = await User.findOne({ _id: userId });
+    console.log(req.body);
+    if (user.favorites.includes(productId)) {
+      res.send({ message: `already favorited` });
+    } else {
+      user.favorites = [...user.favorites, productId];
+      await user.save();
+    }
+    res.send(user);
+  } catch (error) {
+    res.status(500).send({ error });
+  }
+});
+
 module.exports = router;

@@ -59,4 +59,22 @@ router.post(`/login`, async (req, res) => {
   }
 });
 
+router.get(`/me`, async (req, res) => {
+  try {
+    const { id } = req.body;
+    // const user = await User.findOne({ id });
+    const test = await User.aggregate({
+      $lookup: {
+        from: `favorites`,
+        localField: `products`,
+        foreignField: `_id`,
+        as: `favDetails`,
+      },
+    });
+    res.send(test);
+  } catch (error) {
+    res.status(500).send({ error });
+  }
+});
+
 module.exports = router;

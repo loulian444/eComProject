@@ -1,3 +1,15 @@
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get(`id`);
+console.log(id);
+
+if (id) {
+  const auth = document.querySelector(`#auth`);
+  auth.style.display = `none`;
+
+  const navbar = document.querySelector(`#navbar`);
+  navbar.innerHTML += `<a href="http://localhost:4444/profile.html?id=${id}">Profile</a>`;
+}
+
 const fetchProducts = async (page) => {
   try {
     const response = await fetch(
@@ -19,6 +31,7 @@ const displayProducts = (products) => {
       <img src="${product.image}" alt="${product.description}" />
       <p>${product.description}</p>
       <p>Price: $${product.price}</p>
+      ${id ? `<button class="favButton">Add Fav</button>` : null}
     </section>`;
   });
 
@@ -33,6 +46,16 @@ const execute = async () => {
 
   if (products) {
     displayProducts(products.products);
+
+    if (id) {
+      console.log(id);
+      const favButtons = document.querySelectorAll(`.favButton`);
+      favButtons.forEach((button) => {
+        button.addEventListener(`click`, () => {
+          console.log(`gg`)
+        })
+      })
+    }
 
     const prevPage = document.querySelector(`#prevPage`);
     const nextPage = document.querySelector(`#nextPage`);

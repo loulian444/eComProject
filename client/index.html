@@ -4,23 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>eComProject</title>
-    <script src="./scripts/script.js" defer></script>
+    <script src="./scripts/script.js" type="text/javascript" defer></script>
     <link rel="stylesheet" href="./style.css" />
   </head>
 
   <body>
-    <section id="navbar">
+    <section id="navbar" class="flex">
       <a href="./index.html">Home</a>
-      <a href="./profile.html">Profile</a>
-      <a href="./login.html">Login/Register</a>
-
       <section id="buttonSection">
         <button class="pageButtons" id="prevPage">Prev Page</button>
         <span>Page: </span><span id="pageNumber" value="1">1</span>
         <button class="pageButtons" id="nextPage">Next Page</button>
       </section>
+      <a href="./login.html" id="auth">Login/Register</a>
     </section>
-    
+
     <section class="flex" id="productSection"></section>
   </body>
 </html>
